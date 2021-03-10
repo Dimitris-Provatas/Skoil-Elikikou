@@ -1,5 +1,5 @@
 const fs = require('fs');
-const suggestionsFile = "./src/logs/suggestions.txt";
+const suggestionsFile = "./src/my_logs/suggestions.txt";
 
 function GetTime()
 {
