@@ -1,15 +1,18 @@
 {
-  "name": "dsakfjasdkfj",
+  "name": "Skoil Elikikou",
   "version": "1.0.0",
-  "description": "",
+  "description": "Skoil Elikikou",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Sheepstress",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.5.1",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
