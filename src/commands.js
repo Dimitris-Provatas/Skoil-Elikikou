@@ -7,7 +7,7 @@ function helpMessage(author)
     var help = `${author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
     commands.forEach(command =>
     {
-        help += `- ${command}\r\n`;
+        help += `-> ${command}\r\n`;
 
         if (command === "play")
         {
@@ -77,7 +77,7 @@ async function play(bot, message, dir, file)
 
 async function help(bot, message)
 {
-    await channel.send(helpMessage(message.author));
+    await message.channel.send(helpMessage(message.author));
 }
 
 module.exports = {
