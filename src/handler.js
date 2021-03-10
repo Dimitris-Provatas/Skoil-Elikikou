@@ -10,7 +10,7 @@ function HandleHuman(bot, message)
 {
     if (message.content.startsWith("skoil") || message.content.startsWith("σκοιλ"))
     {
-        commands.PerformCommands(bot, message.author, message.channel, message.content.substr(message.content.indexOf(' ') + 1));
+        commands.PerformCommands(bot, message, message.content.substr(message.content.indexOf(' ') + 1));
         return;
     }
 }
