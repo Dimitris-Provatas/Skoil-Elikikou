@@ -40,7 +40,7 @@ function botInit()
             await handler.HandleDM(bot, message);
         // handle humans
         else
-            await handler.HandleHumans(bot, message);
+            await handler.HandleHuman(bot, message);
     });
 }
 
