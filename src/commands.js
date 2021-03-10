@@ -71,7 +71,7 @@ async function play(bot, message, dir, file)
 
     await vc.play(memeDirectoryPath + dir + "/" + file).then(() =>
     {
-        await vc.leave();
+        vc.leave();
     });
 }
 
