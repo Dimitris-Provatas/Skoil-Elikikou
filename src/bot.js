@@ -38,6 +38,9 @@ function botInit()
         // handle DMs
         else if (message.channel.type == "dm")
             await handler.HandleDM(bot, message);
+        // handle not bot requests channel
+        else if (!message.channel.name.includes("bot-requests"))
+            await handler.NotRightchannel(bot, message);
         // handle humans
         else
             await handler.HandleHuman(bot, message);

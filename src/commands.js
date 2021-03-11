@@ -9,6 +9,15 @@ const player = {
     playQueue: [],
 };
 
+const commands = [
+    "help",
+    "files_available",
+    "join",
+    "leave",
+    "play",
+];
+
+
 function helpMessage(author)
 {
     var help = `${author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
@@ -46,14 +55,6 @@ function getMemeDirectories(path)
             .filter(dirent => dirent.isDirectory())
             .map(dirent => dirent.name);
 }
-
-const commands = [
-    "help",
-    "files_available",
-    "join",
-    "leave",
-    "play",
-];
 
 async function PerformCommands(bot, message)
 {
@@ -137,6 +138,7 @@ async function join(bot, message)
 
 async function leave(bot, message)
 {
+    await message.channel.send("ΑΝΤΕ ΓΕΙΑ!");
     await player.voiceChannel.leave();
     player.playQueue = [];
     player.connection = null;

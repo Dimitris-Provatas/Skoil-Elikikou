@@ -15,7 +15,17 @@ function HandleHuman(bot, message)
     }
 }
 
+async function NotRightchannel(bot, message)
+{
+    if (!message.content.startsWith("skoil") || !message.content.startsWith("σκοιλ")) return;
+
+    // await message.delete(1);
+    await message.channel.send(`${message.author} τα requests πάνε στο σωστό κανάλι.`);
+    return;
+}
+
 module.exports = {
     HandleDM,
     HandleHuman,
+    NotRightchannel,
 }
