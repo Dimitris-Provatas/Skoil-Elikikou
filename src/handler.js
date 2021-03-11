@@ -14,7 +14,7 @@ function HandleHuman(bot, message)
 
 async function NotRightchannel(bot, message)
 {
-    const response = await message.channel.send(`${message.author} τα requests να πάνε στο σωστό κανάλι.`);
+    const response = await message.channel.send(`${message.author} τα requests να πάνε στο σωστό κανάλι (hint: είναι το <#518904659461668868>).`);
     await message.delete({ timeout: 1 });
     await response.delete({ timeout: 10000 });
     return;
