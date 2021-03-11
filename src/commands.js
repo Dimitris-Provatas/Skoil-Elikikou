@@ -74,7 +74,7 @@ async function play(bot, message, dir, file)
         return;
     }
 
-    playQueue.push(memeDirectoryPath + dir + "/" + file);
+    playQueue.push(memeDirectoryPath + dir + "/" + file + ".mp3");
     console.log(playQueue);
 
     if (!isPlaying)
