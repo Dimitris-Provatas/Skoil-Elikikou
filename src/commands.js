@@ -138,11 +138,14 @@ async function join(bot, message)
 
 async function leave(bot, message)
 {
-    await message.channel.send("ΑΝΤΕ ΓΕΙΑ!");
-    await player.voiceChannel.leave();
-    player.playQueue = [];
-    player.connection = null;
-    player.voiceChannel = null;
+    if (player.voiceChannel)
+    {
+        await message.channel.send("ΑΝΤΕ ΓΕΙΑ!");
+        await player.voiceChannel.leave();
+        player.playQueue = [];
+        player.connection = null;
+        player.voiceChannel = null;
+    }
 }
 
 async function help(bot, message)
