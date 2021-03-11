@@ -1,5 +1,5 @@
 const fs = require("fs")
-const secrets = JSON.parse(fs.readFileSync('./src/secrets.json'));
+const { token } = require('./secrets.json');
 
 const Discord = require('discord.js');
 const bot = new Discord.Client();
@@ -9,7 +9,7 @@ const helper = require("./helper");
 
 function botInit()
 {
-    bot.login(secrets.token).then(
+    bot.login(token).then(
         () => {},
         error => { console.log(error); }
     );

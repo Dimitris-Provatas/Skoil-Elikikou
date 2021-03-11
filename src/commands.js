@@ -1,9 +1,13 @@
+const e = require("express");
 const fs = require("fs");
 const memeDirectoryPath = './src/memes/';
 const memeDirectories = getMemeDirectories(memeDirectoryPath);
 
-var playQueue = [];
-var isPlaying = false;
+const player = {
+    connection: null,
+    voiceChannel: null,
+    playQueue: [],
+};
 
 function helpMessage(author)
 {
@@ -39,15 +43,17 @@ function filesMessage(author)
 function getMemeDirectories(path)
 {
     return fs.readdirSync(path, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
+            .filter(dirent => dirent.isDirectory())
+            .map(dirent => dirent.name);
 }
 
 const commands = [
     "help",
     "files_available",
+    "join",
+    "leave",
     "play",
-]
+];
 
 async function PerformCommands(bot, message)
 {
@@ -64,39 +70,77 @@ async function PerformCommands(bot, message)
     else
     {
         command += "(bot, message);";
-        eval(command);
+        try
+        {
+            eval(command);
+        }
+        catch (err)
+        {
+            await message.channel.send(`Δεν υπάρχει αυτό το command ${message.author}! Για να δεις τις εντολές, γράψε: \`\`\`skoil help\`\`\``);
+            console.log(err);
+        }
     }
 }
 
 async function play(bot, message, dir, file)
 {
-    const vc = message.member.voice.channel || null;
-    if (!vc)
+    const target = memeDirectoryPath + dir + "/" + file + ".mp3";
+
+    if (!player.voiceChannel)
+    {
+        await message.channel.send(`Δεν είμαι σε κάποιο voice channel ${message.author}! Για να έρθω στο κανάλι που είσαι, γράψε: \`\`\`skoil join\`\`\``);
+        return;
+    }
+
+    if (!fs.existsSync(target))
+    {
+        await message.channel.send(`Δεν υπάρχει αυτό το αρχείο ${message.author}! Για να δεις τα αρχεία, γράψε: \`\`\`skoil files_available\`\`\``);
+        return;
+    }
+
+    if (player.playQueue.length == 0)
+    {
+        player.playQueue.push(target);
+        playSound(message, target);
+    }
+    else
+    {
+        player.playQueue.push(target);
+        await message.channel.send(`Added to queue: ${file}`);
+    }
+}
+
+async function playSound(message, target)
+{
+    await message.channel.send(`Now Playing: ${target.substr(target.lastIndexOf('/')).substr(1)}`);
+    await player.connection.play(target).on("finish", () =>
+    {
+        player.playQueue.shift();
+        if (player.playQueue.length > 0)
+            playSound(message, player.playQueue[0]);
+    });
+}
+
+async function join(bot, message)
+{
+    player.voiceChannel = message.member.voice.channel || null;
+    if (!player.voiceChannel)
     {
         await message.channel.send(`${message.author} δεν είσαι σε Voice Channel.`);
         return;
     }
 
-    playQueue.push(memeDirectoryPath + dir + "/" + file + ".mp3");
-    console.log(playQueue);
+    player.voiceChannel.join().then(async con => {
+        player.connection = con;
+    }).catch(err => { console.log(err); });;
+}
 
-    if (!isPlaying)
-    {
-        vc.join().then(async connection =>
-        {
-            isPlaying = true;
-
-            while (playQueue.length > 0)
-            {
-                const target = playQueue.shift();
-                await message.channel.send(`Now Playing: ${target.substr(target.lastIndexOf('/')).substr(1)}`);
-                await connection.play(target);
-            }
-
-            await vc.leave();
-            isPlaying = false;
-        }).catch(err => { console.log(err); });
-    }
+async function leave(bot, message)
+{
+    await player.voiceChannel.leave();
+    player.playQueue = [];
+    player.connection = null;
+    player.voiceChannel = null;
 }
 
 async function help(bot, message)
