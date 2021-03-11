@@ -2,6 +2,9 @@ const fs = require("fs");
 const memeDirectoryPath = './src/memes/';
 const memeDirectories = getMemeDirectories(memeDirectoryPath);
 
+var playQueue = [];
+var isPlaying = false;
+
 function helpMessage(author)
 {
     var help = `${author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
@@ -43,19 +46,21 @@ const commands = [
     "play"
 ]
 
-async function PerformCommands(bot, message, command)
+async function PerformCommands(bot, message)
 {
+    var command = message.content.substr(message.content.indexOf(' ') + 1);
+
     if (command === "play")
     {
         command = command.split(" ");
         const dir = command[1];
         const file = command[2];
 
-        eval("play(bot, message, func, dir, file)")
+        eval("play(bot, message, func, dir, file);");
     }
     else
     {
-        command += "(bot, message)";
+        command += "(bot, message);";
         eval(command);
     }
 }
@@ -69,10 +74,25 @@ async function play(bot, message, dir, file)
         return;
     }
 
-    await vc.play(memeDirectoryPath + dir + "/" + file).then(() =>
+    playQueue.push(memeDirectoryPath + dir + "/" + file);
+    console.log(playQueue);
+
+    if (!isPlaying)
     {
-        vc.leave();
-    });
+        vc.join().then(connection =>
+        {
+            isPlaying = true;
+
+            while (playQueue.length > 0)
+            {
+                const target = playQueue.shift();
+                await message.channel.send(`Now Playing: ${target.substr(playQueue[0].lastIndexOf('/'))}`);
+                await connection.play(target);
+            }
+
+            await vc.leave().then(() => { isPlaying = false; });
+        }).catch(err => { console.log(err); });
+    }
 }
 
 async function help(bot, message)
