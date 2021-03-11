@@ -31,6 +31,7 @@ function botInit()
     bot.on('message', async message =>
     {
         // console.log(message.content);
+        if (!message.content.startsWith("skoil")) return;
 
         // handle bots
         if (message.author.bot)

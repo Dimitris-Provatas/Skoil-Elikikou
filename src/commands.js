@@ -66,14 +66,14 @@ async function PerformCommands(bot, message)
         const dir = command[1];
         const file = command[2];
 
-        eval("play(bot, message, dir, file);");
+        eval("try { play(bot, message, dir, file); } catch(err) { console.log(err) }");
     }
     else
     {
         command += "(bot, message);";
         try
         {
-            eval(command);
+            eval(`try { ${command} } catch(err) { console.log(err) }`);
         }
         catch (err)
         {

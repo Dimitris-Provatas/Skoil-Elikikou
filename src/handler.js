@@ -8,19 +8,15 @@ function HandleDM(bot, message)
 
 function HandleHuman(bot, message)
 {
-    if (message.content.startsWith("skoil") || message.content.startsWith("σκοιλ"))
-    {
-        commands.PerformCommands(bot, message);
-        return;
-    }
+    commands.PerformCommands(bot, message);
+    return;
 }
 
 async function NotRightchannel(bot, message)
 {
-    if (!message.content.startsWith("skoil") || !message.content.startsWith("σκοιλ")) return;
-
-    // await message.delete(1);
-    await message.channel.send(`${message.author} τα requests πάνε στο σωστό κανάλι.`);
+    const response = await message.channel.send(`${message.author} τα requests να πάνε στο σωστό κανάλι.`);
+    await message.delete({ timeout: 1 });
+    await response.delete({ timeout: 10000 });
     return;
 }
 
