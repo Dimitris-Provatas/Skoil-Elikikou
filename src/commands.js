@@ -158,6 +158,11 @@ async function files_available(bot, message)
     await message.channel.send(filesMessage(message.author));
 }
 
+function dummy(bot, message)
+{
+    return;
+}
+
 module.exports = {
     PerformCommands,
 }
