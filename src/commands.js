@@ -65,7 +65,7 @@ async function PerformCommands(bot, message)
         command.indexOf(';') !== -1
     )
     {
-        await message.channel.send(`${message.author} ξέρω τι πας να κάνεις εκεί, κακό! κρίμα που τώρα οι <@&488730147894198273> θα μάθουν τι πήγες να κάνεις!`);
+        await message.channel.send(`${message.author} ξέρω τι πας να κάνεις εκεί, κακό! Kρίμα που τώρα οι <@&488730147894198273> θα μάθουν τι πήγες να κάνεις!`);
         return;
     }
 
