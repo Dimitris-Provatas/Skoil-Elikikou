@@ -110,18 +110,18 @@ async function play(bot, message, dir, file)
     if (player.playQueue.length == 0)
     {
         player.playQueue.push(target);
-        playSound(message, target);
+        playSound(message, target, dir, file);
     }
     else
     {
         player.playQueue.push(target);
-        await message.channel.send(`Added to queue: ${file}`);
+        await message.channel.send(`Added to queue: ${dir}/${file}.mp3`);
     }
 }
 
-async function playSound(message, target)
+async function playSound(message, target, dir, file)
 {
-    await message.channel.send(`Now Playing: ${target.substr(target.lastIndexOf('/')).substr(1)}`);
+    await message.channel.send(`Now Playing: ${dir}/${file}.mp3`);
     await player.connection.play(target).on("finish", () =>
     {
         player.playQueue.shift();
