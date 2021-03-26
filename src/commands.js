@@ -114,19 +114,19 @@ async function play(bot, message, dir, file)
     }
     else
     {
-        player.playQueue.push(target);
-        await message.channel.send(`Added to queue: ${dir}/${file}.mp3`);
+        player.playQueue.push({target, dir, file});
+        message.channel.send(`Added to queue: ${dir}/${file}.mp3`);
     }
 }
 
 async function playSound(message, target, dir, file)
 {
     await message.channel.send(`Now Playing: ${dir}/${file}.mp3`);
-    await player.connection.play(target).on("finish", () =>
+    player.connection.play(target).on("finish", () =>
     {
         player.playQueue.shift();
         if (player.playQueue.length > 0)
-            playSound(message, player.playQueue[0]);
+            playSound(message, player.playQueue[0].target, player.playQueue[0].dir, player.playQueue[0].file);
     });
 }
 
@@ -164,6 +164,11 @@ async function help(bot, message)
 async function files_available(bot, message)
 {
     await message.channel.send(filesMessage(message.author));
+}
+
+async function ping(bot, message)
+{
+    await message.channel.send(`Pong ρε μαλάκα ${message.author}!`);
 }
 
 function dummy(bot, message)

@@ -1,4 +1,4 @@
-const fs = require("fs")
+// const fs = require("fs")
 const { token } = require('./secrets.json');
 
 const Discord = require('discord.js');
