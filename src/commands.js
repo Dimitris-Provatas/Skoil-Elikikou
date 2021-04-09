@@ -58,7 +58,7 @@ function getMemeDirectories(path)
 
 async function PerformCommands(bot, message)
 {
-    var command = message.content.substr(message.content.indexOf(' ') + 1);
+    var command = message.content.substr(message.content.indexOf(' ') + 1).toLowerCase();
     if (
         command.indexOf('{') !== -1 &&
         command.indexOf('}') !== -1

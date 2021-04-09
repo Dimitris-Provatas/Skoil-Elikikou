@@ -12,7 +12,7 @@ function HandleHuman(bot, message)
     return;
 }
 
-async function NotRightchannel(bot, message)
+async function NotRightChannel(bot, message)
 {
     const response = await message.channel.send(`${message.author} τα requests να πάνε στο σωστό κανάλι (hint: είναι το <#518904659461668868>).`);
     await message.delete({ timeout: 1 });
@@ -23,5 +23,5 @@ async function NotRightchannel(bot, message)
 module.exports = {
     HandleDM,
     HandleHuman,
-    NotRightchannel,
+    NotRightChannel,
 }
