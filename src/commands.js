@@ -15,6 +15,7 @@ const commands = [
     "join => μπαίνω στο voice chat που βρίσκεσαι, αν δεν είσαι σε κάποιο κάνω το κορόιδο",
     "leave => φεύγω από το voice chat που είμαι (επίσης χρήσιμο για όταν κολλάω)",
     "play => αν μετα βάλεις όνομα φακέλου και όνομα αρχείου, ενώ είμαι σε κάποιο voice chat, αναπαράγω το αρχείο",
+    "prune [0 - ∞: number] => σβήνω τις μαλακίες που έγραψες εσύ και οι άλλοι βλάκες νωρίτερα",
 ];
 
 
@@ -58,7 +59,7 @@ function getMemeDirectories(path)
 
 async function PerformCommands(bot, message)
 {
-    var command = message.content.substr(message.content.indexOf(' ') + 1).toLowerCase();
+    var command = message.content.substr(message.content.indexOf(' ') + 1).toLowerCase().toString();
     if (
         command.indexOf('{') !== -1 &&
         command.indexOf('}') !== -1
@@ -78,10 +79,11 @@ async function PerformCommands(bot, message)
     }
     else
     {
-        command += "(bot, message);";
+        command = command.split(" ");
+        command[0] += `(bot, message, ${command[1]});`;
         try
         {
-            eval(`try { ${command} } catch(err) { console.log(err) }`);
+            eval(`try { ${command[0]} } catch(err) { console.log(err) }`);
         }
         catch (err)
         {
@@ -169,6 +171,17 @@ async function files_available(bot, message)
 async function ping(bot, message)
 {
     await message.channel.send(`Pong ρε μαλάκα ${message.author}!`);
+}
+
+async function prune(bot, message, number)
+{
+    if (number === 69 || number === 420 || number === 69420)
+    {
+        await message.channel.send(`LOL, NICE, μου αρέσει ο τρόπος που σκέφτεσαι ${message.author}! Αλλά δεν μπορώ να το κάνω αυτό. Oopsie, αλλά λολ και λεφμάο!`);
+        return;
+    }
+
+    await message.channel.send(`${message.author} δεν επιτρέπεται αυτό! ΆΝΤΕ!`);
 }
 
 function dummy(bot, message)
