@@ -41,7 +41,7 @@ function botInit()
             await handler.HandleDM(bot, message);
         // handle not bot requests channel
         else if (!message.channel.name.includes("bot-requests"))
-            await handler.NotRightchannel(bot, message);
+            await handler.NotRightChannel(bot, message);
         // handle humans
         else
             await handler.HandleHuman(bot, message);
