@@ -11,7 +11,7 @@ const player = {
 
 const commands = [
     "help => αυτό το μήνυμα",
-    "files_available => η δομή των φακέλων με τα mp3 αρχεία για τα voice chats",
+    "files => η δομή των φακέλων με τα mp3 αρχεία για τα voice chats",
     "join => μπαίνω στο voice chat που βρίσκεσαι, αν δεν είσαι σε κάποιο κάνω το κορόιδο",
     "leave => φεύγω από το voice chat που είμαι (επίσης χρήσιμο για όταν κολλάω)",
     "play => αν μετα βάλεις όνομα φακέλου και όνομα αρχείου, ενώ είμαι σε κάποιο voice chat, αναπαράγω το αρχείο",
@@ -31,23 +31,23 @@ function helpMessage(author)
     return help;
 }
 
-function filesMessage(author)
+async function filesMessage(message)
 {
-    var available = `${author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
+    await message.channel.send(`${message.author} οι φάκελοι με τα αρχεία τους είναι:\r\n`);
 
-    memeDirectories.forEach((memeDirectory, idx) =>
+    memeDirectories.forEach(async (memeDirectory, idx) =>
     {
-        available += `-> ${memeDirectory}\r\n`;
+        let dirContents = `\`\`\`-> ${memeDirectory}\r\n`;
+
         const memeDirectoryContents = fs.readdirSync(memeDirectoryPath + memeDirectory + "/");
         memeDirectoryContents.forEach(memeDirectoryContent => {
-            available += `${memeDirectoryContent}, `;
+            dirContents += `${memeDirectoryContent}, `;
         });
-        available += "\r\n\r\n";
+
+        dirContents += "\`\`\`";
+
+        await message.channel.send(dirContents);
     });
-
-    available += "\`\`\`";
-
-    return available;
 }
 
 function getMemeDirectories(path)
@@ -160,12 +160,12 @@ async function leave(bot, message)
 
 async function help(bot, message)
 {
-    await message.channel.send(helpMessage(message.author));
+    helpMessage(message);
 }
 
-async function files_available(bot, message)
+async function files(bot, message)
 {
-    await message.channel.send(filesMessage(message.author));
+    await message.channel.send(filesMessage(message));
 }
 
 async function ping(bot, message)
