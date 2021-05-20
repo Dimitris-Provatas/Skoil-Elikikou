@@ -19,16 +19,16 @@ const commands = [
 ];
 
 
-function helpMessage(author)
+async function helpMessage(message)
 {
-    var help = `${author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
+    var help = `${message.author} οι διαθέσιμες εντολές είναι:\r\n\`\`\`\r\n`;
     commands.forEach(command =>
     {
         help += `-> ${command}\r\n`;
     });
     help += "\`\`\`";
 
-    return help;
+    message.channel.send(help);
 }
 
 async function dirsMessage(message, extra = null)
