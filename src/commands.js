@@ -11,8 +11,8 @@ const player = {
 
 const commands = [
     "help => αυτό το μήνυμα",
-    "files => η δομή των φακέλων με τα mp3 αρχεία για τα voice chats",
-    "join => μπαίνω στο voice chat που βρίσκεσαι, αν δεν είσαι σε κάποιο κάνω το κορόιδο",
+    "files [directory name] => τα ονόματα των φακέλων με τα mp3 αρχεία για τα voice chats, αν δωθεί 'directory name' δείχνω τα αρχεία του φακέλου",
+    "join => μπαίνω στο voice chat που βρίσκεσαι, αν δεν είσαι σε κάποιο, κάνω το κορόιδο",
     "leave => φεύγω από το voice chat που είμαι (επίσης χρήσιμο για όταν κολλάω)",
     "play => αν μετα βάλεις όνομα φακέλου και όνομα αρχείου, ενώ είμαι σε κάποιο voice chat, αναπαράγω το αρχείο",
     "prune [0 - ∞: number] => σβήνω τις μαλακίες που έγραψες εσύ και οι άλλοι βλάκες νωρίτερα",
@@ -31,23 +31,38 @@ function helpMessage(author)
     return help;
 }
 
-async function filesMessage(message)
+async function dirsMessage(message, extra = null)
 {
-    await message.channel.send(`${message.author} οι φάκελοι με τα αρχεία τους είναι:\r\n`);
-
-    memeDirectories.forEach(async (memeDirectory, idx) =>
+    if (extra !== undefined && extra !== 'undefined')
     {
-        let dirContents = `\`\`\`-> ${memeDirectory}\r\n`;
+        filesMessage(message, extra);
+        return;
+    }
 
-        const memeDirectoryContents = fs.readdirSync(memeDirectoryPath + memeDirectory + "/");
-        memeDirectoryContents.forEach(memeDirectoryContent => {
-            dirContents += `${memeDirectoryContent}, `;
-        });
+    var response = `${message.author}, οι φάκελοι είναι:\`\`\``;
 
-        dirContents += "\`\`\`";
-
-        await message.channel.send(dirContents);
+    memeDirectories.forEach(memeDirectory =>
+    {
+        response += `- ${memeDirectory}\r\n`;
     });
+
+    response += "\`\`\`";
+
+    await message.channel.send(response);
+}
+
+async function filesMessage(message, extra)
+{
+    var response = `${message.author}, τα αρχεία του φακέλου ${extra} είναι:\r\n\`\`\``;
+
+    const memeDirectoryContents = fs.readdirSync(memeDirectoryPath + extra + "/");
+    memeDirectoryContents.forEach(memeDirectoryContent => {
+        response += `${memeDirectoryContent}, `;
+    });
+
+    response += "\`\`\`";
+
+    await message.channel.send(response);
 }
 
 function getMemeDirectories(path)
@@ -80,7 +95,8 @@ async function PerformCommands(bot, message)
     else
     {
         command = command.split(" ");
-        command[0] += `(bot, message, ${command[1]});`;
+        command[0] += `(bot, message, '${command[1]}');`;
+
         try
         {
             eval(`try { ${command[0]} } catch(err) { console.log(err) }`);
@@ -163,9 +179,9 @@ async function help(bot, message)
     helpMessage(message);
 }
 
-async function files(bot, message)
+async function files(bot, message, extra)
 {
-    await message.channel.send(filesMessage(message));
+    dirsMessage(message, extra);
 }
 
 async function ping(bot, message)
