@@ -31,7 +31,6 @@ function botInit()
     bot.on('message', async message =>
     {
         // console.log(message.content);
-        if (!message.content.toLowerCase().startsWith("skoil")) return;
 
         // handle bots
         if (message.author.bot)
@@ -39,8 +38,10 @@ function botInit()
         // handle DMs
         else if (message.channel.type == "dm")
             await handler.HandleDM(bot, message);
+        else if (!message.content.toLowerCase().startsWith("skoil"))
+            return;
         // handle not bot requests channel
-        else if (!message.channel.name.includes("bot-requests"))
+        else if (!message.channel.name.includes("bot") )
             await handler.NotRightChannel(bot, message);
         // handle humans
         else

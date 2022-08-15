@@ -121,7 +121,7 @@ async function play(bot, message, dir, file)
 
     if (!fs.existsSync(target))
     {
-        await message.channel.send(`Δεν υπάρχει αυτό το αρχείο ${message.author}! Για να δεις τα αρχεία, γράψε: \`\`\`skoil files_available\`\`\``);
+        await message.channel.send(`Δεν υπάρχει αυτό το αρχείο ${message.author}! Για να δεις τα αρχεία, γράψε: \`\`\`skoil files <folder_name?>\`\`\``);
         return;
     }
 
