@@ -1,10 +1,9 @@
-const botInit = require('./bot');
-const keepAlive = require('./server');
+const botInit = require("./bot");
+const keepAlive = require("./server");
 
 init();
 
-async function init()
-{
-    await botInit();
-    keepAlive();
+async function init() {
+  await botInit();
+  keepAlive();
 }
