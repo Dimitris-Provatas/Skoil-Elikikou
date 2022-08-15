@@ -117,3 +117,5 @@ dist
 
 # not to push
 src/secrets.json
+
+.vscode
