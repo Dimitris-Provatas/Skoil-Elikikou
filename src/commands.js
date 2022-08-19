@@ -1,4 +1,3 @@
-const e = require("express");
 const fs = require("fs");
 const memeDirectoryPath = "./src/memes/";
 const memeDirectories = getMemeDirectories(memeDirectoryPath);

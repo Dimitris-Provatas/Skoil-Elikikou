@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const server = express();
 
 const d = new Date();
@@ -15,7 +14,7 @@ function keepAlive() {
     "-",
     "/",
   );
-  server.listen(3000, () => {
+  server.listen(process.env.PORT || 3000, () => {
     console.log(`${time}: Server is Ready!`);
   });
 }
